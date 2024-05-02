@@ -17,7 +17,7 @@ Voici la liste des tâches à accomplir pour ce projet :
 - [x] Cloner un repository.
 - [x] Lancer l'application.
 - [ ] Ouvrir les ports de la VM pour permettre l'accès à l'application depuis l'extérieur.
-- [ ] Rédiger une documentation sur les variables à configurer dans Terraform.
+- [x] Rédiger une documentation sur les variables à configurer dans Terraform.
 
 ## Processus de Lancement du Projet
 
@@ -25,7 +25,7 @@ Voici les étapes à suivre pour lancer le projet :
 
 1. **Cloner le Référentiel :** Clonez ce référentiel sur votre machine locale en utilisant la commande suivante :
 ```sh
-git clone <URL_du_referentiel>
+git clone git@github.com:elodiejl/Devops.git
 ```
 2. **Configurer Terraform :** Assurez-vous d'avoir Terraform installé sur votre machine. Vous pouvez trouver les instructions d'installation sur le site officiel de Terraform.
 
