@@ -91,6 +91,11 @@ resource "azurerm_storage_account" "my_storage_account" {
 }
 
 
+data "azurerm_public_ip" "name" {
+  name = azurerm_public_ip.my_terraform_public_ip.name
+  resource_group_name = azurerm_resource_group.rg.name
+}
+
 
 resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
   name                  = "myVM"
@@ -123,4 +128,32 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
   boot_diagnostics {
     storage_account_uri = azurerm_storage_account.my_storage_account.primary_blob_endpoint
   }
+}
+
+resource "null_resource" "project" {
+  connection {
+      type        = "ssh"
+      user        = var.username
+      private_key = azapi_resource_action.ssh_public_key_gen.output.privateKey
+      host        = data.azurerm_public_ip.name.ip_address
+  }
+
+  provisioner "file" {
+    source      = "./script.sh"  # Chemin local vers votre script
+    destination = "/tmp/script.sh"  # Chemin de destination sur la machine virtuelle
+  }
+
+  
+  provisioner "remote-exec" {
+    inline = [
+        "chmod +x /tmp/script.sh",
+        "/tmp/script.sh",
+    ]
+  }
+  depends_on = [ data.azurerm_public_ip.name ]
+}
+
+output "project_started_message" {
+  value       = "Le projet a été cloné et lancé avec succès sur la machine distante."
+  description = "output"
 }
