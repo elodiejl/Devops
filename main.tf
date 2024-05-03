@@ -90,7 +90,6 @@ resource "azurerm_storage_account" "my_storage_account" {
   account_replication_type = "LRS"
 }
 
-
 data "azurerm_public_ip" "name" {
   name = azurerm_public_ip.my_terraform_public_ip.name
   resource_group_name = azurerm_resource_group.rg.name
@@ -130,6 +129,32 @@ resource "azurerm_linux_virtual_machine" "my_terraform_vm" {
   }
 }
 
+# Création du groupe de sécurité réseau (NSG)
+resource "azurerm_network_security_group" "my_nsg" {
+  name                = "myNSG"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  security_rule {
+    name                       = "Allow_NodeJS_App"
+    priority                   = 1001
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "3000"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+  depends_on = [ data.azurerm_public_ip.name ]
+}
+
+# Associer le groupe de sécurité réseau à votre interface réseau ou sous-réseau
+resource "azurerm_subnet_network_security_group_association" "example" {
+  subnet_id                 = azurerm_subnet.my_terraform_subnet.id
+  network_security_group_id = azurerm_network_security_group.my_nsg.id
+}
+
 resource "null_resource" "project" {
   connection {
       type        = "ssh"
@@ -155,5 +180,5 @@ resource "null_resource" "project" {
 
 output "project_started_message" {
   value       = "Le projet a été cloné et lancé avec succès sur la machine distante."
-  description = "output"
+  description = "ouput"
 }

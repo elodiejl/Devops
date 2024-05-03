@@ -13,7 +13,7 @@ sudo apt-get install -y docker.io
 sudo usermod -aG docker $USER
 
 sudo apt-get install -y nodejs npm
-git clone https://github.com/johnpapa/node-hello.git,  # Remplacez l'URL du dépôt par celui que vous souhaitez cloner
-cd node-hello,
-npm install,  # Assurez-vous d'adapter cette commande selon votre projet (ex: yarn install, composer install, etc.)
+git clone https://github.com/johnpapa/node-hello.git  # Remplacez l'URL du dépôt par celui que vous souhaitez cloner
+cd node-hello
+npm install  # Assurez-vous d'adapter cette commande selon votre projet (ex: yarn install, composer install, etc.)
 npm start
